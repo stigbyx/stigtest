@@ -1,0 +1,882 @@
+OBJECT Table 50003 Fixed Asset Import
+{
+  OBJECT-PROPERTIES
+  {
+    Date=23.01.18;
+    Time=11:25:11;
+    Modified=Yes;
+    Version List=;
+  }
+  PROPERTIES
+  {
+    OnDelete=BEGIN
+               IF Status <> Status::Ready THEN
+                 ERROR(Text001,FORMAT(Status));
+             END;
+
+  }
+  FIELDS
+  {
+    { 1   ;   ;Entry No.           ;Integer       ;AutoIncrement=Yes;
+                                                   CaptionML=[ENU=Entry No.;
+                                                              NOR=L›penr.];
+                                                   Editable=No }
+    { 2   ;   ;Main Fixed Asset No.;Code20        ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=Main Fixed Asset No.;
+                                                              NOR=Hovedaktivanr.] }
+    { 3   ;   ;Description         ;Text50        ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=Description;
+                                                              NOR=Beskrivelse] }
+    { 4   ;   ;FA Location Code    ;Code10        ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=FA Location Code;
+                                                              NOR=Aktivalokasjonskode] }
+    { 5   ;   ;Amount              ;Decimal       ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=Amount;
+                                                              NOR=Bel›p] }
+    { 6   ;   ;No. of Depreciation Years;Decimal  ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=No. of Depreciation Years;
+                                                              NOR=Antall avskrivnings†r];
+                                                   DecimalPlaces=2:8 }
+    { 7   ;   ;Depreciation Starting Date;Date    ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=Depreciation Starting Date;
+                                                              NOR=Startdato for avskrivning];
+                                                   Editable=Yes }
+    { 8   ;   ;FA Class Code       ;Code10        ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=FA Class Code;
+                                                              NOR=Aktivaklassekode] }
+    { 9   ;   ;Depreciation Book Code;Code10      ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=Depreciation Book Code;
+                                                              NOR=Avskrivningstabl†kode] }
+    { 10  ;   ;FA Posting Group    ;Code20        ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=FA Posting Group;
+                                                              NOR=Bokf›ringsgruppe - aktiva] }
+    { 11  ;   ;Depreciation Method ;Text30        ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=Depreciation Method;
+                                                              NOR=Avskrivningsmetode] }
+    { 12  ;   ;CCA                 ;Code20        ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=CCA;
+                                                              NOR=CCA] }
+    { 13  ;   ;CCE                 ;Code20        ;OnValidate=BEGIN
+                                                                TESTFIELD(Status,Status::Ready);
+                                                              END;
+
+                                                   CaptionML=[ENU=CCE;
+                                                              NOR=CCE] }
+    { 14  ;   ;Bal. Account No.    ;Code20        ;OnValidate=BEGIN
+                                                                IF Status = Status::Finished THEN
+                                                                  ERROR(Text003,FORMAT(Status));
+                                                              END;
+
+                                                   CaptionML=[ENU=Bal. Account No.;
+                                                              NOR=Motkontonr.] }
+    { 100 ;   ;Import Date/Time    ;DateTime      ;CaptionML=[ENU=Import Date/Time;
+                                                              NOR=Importert dato/tidspkt.];
+                                                   Editable=No }
+    { 101 ;   ;Import User ID      ;Code50        ;TableRelation=User."User Name";
+                                                   OnLookup=VAR
+                                                              UserMgt@1000 : Codeunit 418;
+                                                            BEGIN
+                                                              UserMgt.LookupUserID("Import User ID");
+                                                            END;
+
+                                                   TestTableRelation=No;
+                                                   CaptionML=[ENU=Import User ID;
+                                                              NOR=Importert av bruker-ID];
+                                                   Editable=No }
+    { 102 ;   ;Import File Name    ;Text100       ;CaptionML=[ENU=Import File Name;
+                                                              NOR=Filnavn];
+                                                   Editable=No }
+    { 110 ;   ;Created Date/Time   ;DateTime      ;CaptionML=[ENU=Created Date/Time;
+                                                              NOR=Opprettet dato/tidspkt.];
+                                                   Editable=No }
+    { 111 ;   ;Created User ID     ;Code50        ;TableRelation=User."User Name";
+                                                   OnLookup=VAR
+                                                              UserMgt@1000 : Codeunit 418;
+                                                            BEGIN
+                                                              UserMgt.LookupUserID("Created User ID");
+                                                            END;
+
+                                                   TestTableRelation=No;
+                                                   CaptionML=[ENU=Created User ID;
+                                                              NOR=Opprettet av bruker-ID];
+                                                   Editable=No }
+    { 112 ;   ;Fixed Asset No.     ;Code20        ;CaptionML=[ENU=Fixed Asset No.;
+                                                              NOR=Aktivanr.];
+                                                   Editable=No }
+    { 120 ;   ;Journal Date/Time   ;DateTime      ;CaptionML=[ENU=Journal Date/Time;
+                                                              NOR=Kladd dato/tidspkt.];
+                                                   Editable=No }
+    { 121 ;   ;Journal User ID     ;Code50        ;TableRelation=User."User Name";
+                                                   OnLookup=VAR
+                                                              UserMgt@1000 : Codeunit 418;
+                                                            BEGIN
+                                                              UserMgt.LookupUserID("Journal User ID");
+                                                            END;
+
+                                                   TestTableRelation=No;
+                                                   CaptionML=[ENU=Journal User ID;
+                                                              NOR=Kladd bruker-ID];
+                                                   Editable=No }
+    { 122 ;   ;Journal Template    ;Code10        ;CaptionML=[ENU=Journal Template;
+                                                              NOR=Kladdemal];
+                                                   Editable=No }
+    { 123 ;   ;Journal Batch       ;Code10        ;CaptionML=[ENU=Journal Batch;
+                                                              NOR=Kladd];
+                                                   Editable=No }
+    { 130 ;   ;Error Message       ;Text250       ;CaptionML=[ENU=Error Message;
+                                                              NOR=Feilmelding];
+                                                   Editable=No }
+    { 140 ;   ;Status              ;Option        ;OnValidate=BEGIN
+                                                                IF (CurrFieldNo = FIELDNO(Status)) AND (Status <> xRec.Status) THEN BEGIN
+                                                                  IF Status = Status::Finished THEN BEGIN
+                                                                    IF NOT CONFIRM(Text002,FALSE,FORMAT(Status)) THEN
+                                                                      Status := xRec.Status;
+                                                                  END ELSE
+                                                                    Status := xRec.Status;
+                                                                END;
+                                                              END;
+
+                                                   OptionCaptionML=[ENU=Ready,Process,Finished;
+                                                                    NOR=Klar,Under behandling,Ferdig];
+                                                   OptionString=Ready,Process,Finished }
+  }
+  KEYS
+  {
+    {    ;Entry No.                               ;Clustered=Yes }
+    {    ;Status                                   }
+  }
+  FIELDGROUPS
+  {
+  }
+  CODE
+  {
+    VAR
+      Text001@1000000000 : TextConst 'ENU=You cannot delete a line with status %1!;NOR=Du kan ikke slette en linje med status %1!';
+      Text002@1000000001 : TextConst 'ENU=Do you wish to change the status to %1? It will not be possible to reverse the status!;NOR=nsker du † endre status til %1? Det vil ikke v‘re mulig † tilbakestille statusen!';
+      Text003@1000000002 : TextConst 'ENU=You cannot modify current field when status is %1!;NOR=Ikke tillatt † redigere gjeldende felt n†r status er %1!';
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Report 50003 Create Fixed Assets
+{
+  OBJECT-PROPERTIES
+  {
+    Date=23.01.18;
+    Time=12:41:03;
+    Modified=Yes;
+    Version List=;
+  }
+  PROPERTIES
+  {
+    CaptionML=[ENU=Create Fixed Assets;
+               NOR=Opprett aktiva];
+    ProcessingOnly=Yes;
+    OnPreReport=BEGIN
+                  FACount := 0;
+                  GenJnlCount := 0;
+                  ErrorCount := 0;
+                END;
+
+    OnPostReport=BEGIN
+                   IF GenJnlCount > 0 THEN
+                     IF CONFIRM(Text001,TRUE) THEN BEGIN
+                       GenJnlLine.VALIDATE("Journal Template Name",JournalTemplate);
+                       GenJnlLine.VALIDATE("Journal Batch Name",BatchName);
+                       GenJnlLine.SETRANGE("Journal Template Name",JournalTemplate);
+                       GenJnlLine.SETRANGE("Journal Batch Name",BatchName);
+                       PAGE.RUN(PAGE::"Fixed Asset G/L Journal",GenJnlLine);
+                     END;
+                 END;
+
+  }
+  DATASET
+  {
+    { 1000000000;;DataItem;                  ;
+               DataItemTable=Table50003;
+               DataItemTableView=SORTING(Status)
+                                 WHERE(Status=FILTER(<>Finished));
+               OnAfterGetRecord=BEGIN
+                                  FixedAssetImport.GET("Entry No.");
+
+                                  IF FixedAssetImport."Fixed Asset No." = '' THEN BEGIN
+                                    IF CODEUNIT.RUN(CODEUNIT::CreateFixedAsset,FixedAssetImport) THEN BEGIN
+                                      FACount += 1;
+                                      COMMIT;
+                                    END ELSE BEGIN
+                                      FixedAssetImport."Error Message" := COPYSTR(GETLASTERRORTEXT,1,MAXSTRLEN("Error Message"));
+                                      FixedAssetImport.MODIFY;
+                                      COMMIT;
+                                      ErrorCount += 1;
+                                    END;
+                                  END;
+
+                                  IF FixedAssetImport."Fixed Asset No." <> '' THEN BEGIN
+                                    AcquireFixedAsset.SetParameters(PostingDate,JournalTemplate,BatchName);
+                                    IF AcquireFixedAsset.RUN(FixedAssetImport) THEN BEGIN
+                                      GenJnlCount += 1;
+                                      COMMIT;
+                                    END ELSE BEGIN
+                                      FixedAssetImport."Error Message" := COPYSTR(GETLASTERRORTEXT,1,MAXSTRLEN("Error Message"));
+                                      FixedAssetImport.MODIFY;
+                                      COMMIT;
+                                      ErrorCount += 1;
+                                    END;
+                                  END;
+                                END;
+
+               OnPostDataItem=BEGIN
+                                MESSAGE(Text002,FORMAT(FACount),FORMAT(GenJnlCount),FORMAT(ErrorCount));
+                              END;
+                               }
+
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+      OnOpenPage=BEGIN
+                   IF PostingDate = 0D THEN
+                     PostingDate := WORKDATE;
+                 END;
+
+      OnQueryClosePage=VAR
+                         FileMgt@1000000000 : Codeunit 419;
+                       BEGIN
+                         IF CloseAction = ACTION::OK THEN BEGIN
+                           IF PostingDate = 0D THEN
+                             ERROR(PostingDateIsEmptyErr);
+                           IF BatchName = '' THEN
+                             ERROR(Text005);
+                           IF JournalTemplate = '' THEN
+                             ERROR(Text004);
+                         END;
+                       END;
+
+    }
+    CONTROLS
+    {
+      { 1000000006;0;Container;
+                  ContainerType=ContentArea }
+
+      { 1000000005;1;Group  ;
+                  CaptionML=[ENU=Options;
+                             NOR=Alternativer] }
+
+      { 1000000003;2;Field  ;
+                  CaptionML=[ENU=Posting Date;
+                             NOR=Bokf›ringsdato];
+                  SourceExpr=PostingDate }
+
+      { 1000000002;2;Field  ;
+                  CaptionML=[ENU=Journal Template;
+                             NOR=Kladdemal];
+                  SourceExpr=JournalTemplate;
+                  TableRelation="Gen. Journal Batch".Name;
+                  OnLookup=VAR
+                             GenJnlTemplate@1000000002 : Record 80;
+                             GenJnlTemplates@1000000001 : Page 101;
+                           BEGIN
+                             GenJnlTemplate.SETRANGE(Type,GenJnlTemplate.Type::General);
+                             GenJnlTemplate.SETRANGE(Recurring,FALSE);
+                             GenJnlTemplates.SETTABLEVIEW(GenJnlTemplate);
+
+                             GenJnlTemplates.LOOKUPMODE := TRUE;
+                             GenJnlTemplates.EDITABLE := FALSE;
+                             IF GenJnlTemplates.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                               GenJnlTemplates.GETRECORD(GenJnlTemplate);
+                               JournalTemplate := GenJnlTemplate.Name;
+                             END;
+                           END;
+                            }
+
+      { 1000000001;2;Field  ;
+                  CaptionML=[ENU=Batch Name;
+                             NOR=Bunkenavn];
+                  SourceExpr=BatchName;
+                  TableRelation="Gen. Journal Batch".Name;
+                  OnLookup=VAR
+                             GenJnlBatch@1000000002 : Record 232;
+                             GenJnlBatches@1000000001 : Page 251;
+                           BEGIN
+                             IF JournalTemplate <> '' THEN BEGIN
+                               GenJnlBatch.SETRANGE("Journal Template Name",JournalTemplate);
+                               GenJnlBatches.SETTABLEVIEW(GenJnlBatch);
+                             END;
+
+                             GenJnlBatches.LOOKUPMODE := TRUE;
+                             GenJnlBatches.EDITABLE := FALSE;
+                             IF GenJnlBatches.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                               GenJnlBatches.GETRECORD(GenJnlBatch);
+                               BatchName := GenJnlBatch.Name;
+                             END;
+                           END;
+                            }
+
+    }
+  }
+  LABELS
+  {
+  }
+  CODE
+  {
+    VAR
+      Text001@1000000008 : TextConst 'ENU=Open fixed asset G/L journal?;NOR=pne aktivafinanskladd?';
+      Text002@1000000009 : TextConst 'ENU=No. of fixed assets created: %1 \No. of fixed assets in journal: %2 \No. of errors: %3;NOR=Antall aktiva opprettet: %1 \Antall aktiva i kladd: %2 \Antall feil: %3';
+      Text004@1000000026 : TextConst 'ENU=Journal Template name is blank.;NOR=Navn p† kladdemal er tomt.';
+      Text005@1000000025 : TextConst 'ENU=Journal Batch name is blank.;NOR=Navn p† bunke er tomt.';
+      FixedAssetImport@1000000010 : Record 50003;
+      GenJnlLine@1000000000 : Record 81;
+      AcquireFixedAsset@1000000004 : Codeunit 50004;
+      Window@1000000005 : Dialog;
+      PostingDate@1000000021 : Date;
+      JournalTemplate@1000000019 : Text[10];
+      BatchName@1000000020 : Code[10];
+      TotalRecNo@1000000007 : Integer;
+      RecNo@1000000006 : Integer;
+      PostingDateIsEmptyErr@1000000024 : TextConst 'ENU=The posting date is empty.;NOR=Bokf›ringsdatoen er tom.';
+      FACount@1000000001 : Integer;
+      GenJnlCount@1000000002 : Integer;
+      ErrorCount@1000000003 : Integer;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 50004 Import Fixed Assets from Excel
+{
+  OBJECT-PROPERTIES
+  {
+    Date=23.01.18;
+    Time=10:51:11;
+    Modified=Yes;
+    Version List=;
+  }
+  PROPERTIES
+  {
+    CaptionML=[ENU=Import Fixed Assets from Excel;
+               NOR=Importer aktiva fra Excel];
+    ProcessingOnly=Yes;
+    OnInitReport=VAR
+                   TestFixedAssetImport@1000000000 : Record 50003;
+                 BEGIN
+                   TestFixedAssetImport.SETRANGE(Status,TestFixedAssetImport.Status::Ready,TestFixedAssetImport.Status::Process);
+                   IF TestFixedAssetImport.FINDFIRST THEN
+                     ERROR(Text006);
+                 END;
+
+    OnPreReport=BEGIN
+                  ServerFileName := FileMgt.UploadFile(Text001,ExcelFileExtensionTok);
+                  IF ServerFileName = '' THEN
+                    CurrReport.QUIT;
+
+                  IF SheetName = '' THEN
+                    SheetName := TempExcelBuf.SelectSheetsName(ServerFileName);
+                  TempExcelBuf.LOCKTABLE;
+                  TempExcelBuf.OpenBook(ServerFileName,SheetName);
+                  TempExcelBuf.ReadSheet;
+
+                  FileName := FileMgt.GetFileName(ServerFileName);
+
+                  AnalyzeData;
+                END;
+
+    OnPostReport=BEGIN
+                   TempExcelBuf.DELETEALL;
+                 END;
+
+    UseRequestPage=No;
+  }
+  DATASET
+  {
+    { 1000000000;;DataItem;                  ;
+               DataItemTable=Table2000000026;
+               DataItemTableView=SORTING(Number)
+                                 WHERE(Number=CONST(1)) }
+
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  LABELS
+  {
+  }
+  CODE
+  {
+    VAR
+      Text001@1000000022 : TextConst 'ENU=Import Excel File;NOR=Importer Excel-fil';
+      Text002@1000000004 : TextConst 'ENU=Analyzing Data...\\;NOR=Analyserer data...\\';
+      Text003@1000000008 : TextConst 'ENU=Error on line %1 in excel sheet.;NOR=Feil p† linje %1 i excelark.';
+      Text004@1000000026 : TextConst 'ENU=Journal Template name is blank.;NOR=Navn p† kladdemal er tomt.';
+      Text005@1000000025 : TextConst 'ENU=Journal Batch name is blank.;NOR=Navn p† bunke er tomt.';
+      Text006@1000000011 : TextConst 'ENU=All lines in the import worksheet must be processed before you can make a new import!;NOR=Alle linjer i importforslaget m† v‘re ferdigbehandlet f›r du kan gj›r en ny import!';
+      ExcelFileExtensionTok@1000000000 : TextConst '@@@={Locked};ENU=.xlsx;NOR=.xlsx';
+      TempExcelBuf@1000000002 : TEMPORARY Record 370;
+      FileMgt@1000000009 : Codeunit 419;
+      Window@1000000005 : Dialog;
+      ServerFileName@1000000001 : Text;
+      FileName@1000000010 : Text;
+      SheetName@1000000003 : Text[250];
+      TotalRecNo@1000000007 : Integer;
+      RecNo@1000000006 : Integer;
+      FAAmount@1000000013 : Decimal;
+      DepreciationYears@1000000012 : Decimal;
+      PostingDateIsEmptyErr@1000000024 : TextConst 'ENU=The posting date is empty.;NOR=Bokf›ringsdatoen er tom.';
+
+    LOCAL PROCEDURE AnalyzeData@1000000000();
+    VAR
+      FixedAssetImport@1000000001 : Record 50003;
+      OldRowNo@1000000000 : Integer;
+      HeaderRow@1000000011 : Boolean;
+      LastExcelBuf@1000000012 : Boolean;
+    BEGIN
+
+      Window.OPEN(
+        Text002 +
+        '@1@@@@@@@@@@@@@@@@@@@@@@@@@\');
+      Window.UPDATE(1,0);
+      TotalRecNo := TempExcelBuf.COUNT;
+      RecNo := 0;
+
+      InitValues(FixedAssetImport);
+      FixedAssetImport."Entry No." := 0;
+
+      IF TempExcelBuf.FIND('-') THEN BEGIN
+        REPEAT
+          RecNo := RecNo + 1;
+          Window.UPDATE(1,ROUND(RecNo / TotalRecNo * 10000,1));
+
+          HeaderRow := (TempExcelBuf."Row No." = 1);
+
+          WITH FixedAssetImport DO BEGIN
+            CASE TRUE OF
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 1):  // FA No.
+                  "Main Fixed Asset No." := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 2):  // FA Description
+                  Description := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 3):  // FA Location Code
+                  "FA Location Code" := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 4):  // FA Amount
+                  EVALUATE(Amount,TempExcelBuf."Cell Value as Text");
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 5):  // Depreciation Years
+                  EVALUATE("No. of Depreciation Years",TempExcelBuf."Cell Value as Text");
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 6):  // Depreciation Starting Date
+                  EVALUATE("Depreciation Starting Date",TempExcelBuf."Cell Value as Text");
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 7):  // FA Class Code
+                  "FA Class Code" := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 8):  // Depreciation Book Code
+                  "Depreciation Book Code" := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 9):  // FA Posting Group
+                  "FA Posting Group" := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 10): // Depreciation Method
+                  "Depreciation Method" := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 11): // CCA
+                  CCA := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 12): // CCE
+                  CCE := TempExcelBuf."Cell Value as Text";
+              (TempExcelBuf."Row No." > 1) AND (TempExcelBuf."Column No." = 13): // Bal. Account No.
+                  "Bal. Account No." := TempExcelBuf."Cell Value as Text";
+            END;
+            LastExcelBuf := (TempExcelBuf.NEXT = 0);
+            IF (TempExcelBuf."Row No." <> OldRowNo) OR LastExcelBuf THEN BEGIN
+              IF NOT(HeaderRow) THEN BEGIN
+                IF "Main Fixed Asset No." <> '' THEN
+                  INSERT;
+                InitValues(FixedAssetImport);
+                "Entry No." := 0;
+              END;
+              OldRowNo := TempExcelBuf."Row No.";
+            END;
+          END;
+        UNTIL LastExcelBuf;
+      END;
+      Window.CLOSE;
+    END;
+
+    LOCAL PROCEDURE InitValues@1000000002(VAR FixedAssetImport@1000000000 : Record 50003);
+    BEGIN
+      WITH FixedAssetImport DO BEGIN
+        INIT;
+        "Import Date/Time" := CURRENTDATETIME;
+        "Import User ID" := USERID;
+        "Import File Name" := COPYSTR(FileName,1,MAXSTRLEN("Import File Name"));
+      END;
+    END;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Codeunit 50003 CreateFixedAsset
+{
+  OBJECT-PROPERTIES
+  {
+    Date=23.01.18;
+    Time=08:04:20;
+    Modified=Yes;
+    Version List=;
+  }
+  PROPERTIES
+  {
+    TableNo=50003;
+    OnRun=BEGIN
+            // Create missing FA subclass if necessary
+            IF NOT FASubclass.GET("Main Fixed Asset No.") THEN BEGIN
+              FASubclass.INIT;
+              FASubclass.Code := "Main Fixed Asset No.";
+              FASubclass.Name := Description;
+              FASubclass.INSERT(TRUE);
+            END;
+
+            // Create main asset and corresponding depreciation book if it doesn't already exist
+            IF NOT FixedAsset.GET("Main Fixed Asset No.") THEN BEGIN
+              MainFixedAsset.INIT;
+              MainFixedAsset."No." := "Main Fixed Asset No.";
+              MainFixedAsset.VALIDATE(Description,Description);
+              MainFixedAsset.VALIDATE("FA Class Code","FA Class Code");
+              MainFixedAsset.VALIDATE("FA Subclass Code","Main Fixed Asset No.");
+              MainFixedAsset.INSERT(TRUE);
+              FADepreciationBook.INIT;
+              FADepreciationBook."FA No." := "Main Fixed Asset No.";
+              FADepreciationBook."Depreciation Book Code" := "Depreciation Book Code";
+              FADepreciationBook.INSERT(TRUE);
+            END;
+
+            // Create "component" asset
+            IF FASubclass.INSERT(TRUE) THEN;
+            FixedAsset.INIT;
+            MainAssetComp.SETRANGE("Main Asset No.","Main Fixed Asset No.");
+            IF NOT MainAssetComp.FINDLAST THEN
+              FixedAsset."No." := "Main Fixed Asset No." + '-001'
+            ELSE
+              FixedAsset."No." := INCSTR(MainAssetComp."FA No.");
+            FixedAsset.VALIDATE(Description,Description);
+            FixedAsset.VALIDATE("FA Location Code","FA Location Code");
+            FixedAsset.VALIDATE("FA Posting Group","FA Posting Group");
+            FixedAsset.VALIDATE("FA Class Code", "FA Class Code");
+            FixedAsset.VALIDATE("FA Subclass Code","Main Fixed Asset No.");
+            FixedAsset.INSERT(TRUE);
+
+            // Create depreciation book for "component" asset
+            FADepreciationBook.INIT;
+            FADepreciationBook."FA No." := FixedAsset."No.";
+            FADepreciationBook."Depreciation Book Code" := "Depreciation Book Code";
+            CASE "Depreciation Method" OF
+                'Line‘r': FADepreciationBook.VALIDATE("Depreciation Method",FADepreciationBook."Depreciation Method"::"Straight-Line");
+                'Saldo 1': FADepreciationBook.VALIDATE("Depreciation Method",FADepreciationBook."Depreciation Method"::"Declining-Balance 1");
+                'Saldo 2': FADepreciationBook.VALIDATE("Depreciation Method",FADepreciationBook."Depreciation Method"::"Declining-Balance 2");
+                'Saldo 1/Line‘r': FADepreciationBook.VALIDATE("Depreciation Method",FADepreciationBook."Depreciation Method"::"DB1/SL");
+                'Saldo 2/Line‘r': FADepreciationBook.VALIDATE("Depreciation Method",FADepreciationBook."Depreciation Method"::"DB2/SL");
+                'Brukerdefinert': FADepreciationBook.VALIDATE("Depreciation Method",FADepreciationBook."Depreciation Method"::"User-Defined");
+                'Manuell': FADepreciationBook.VALIDATE("Depreciation Method",FADepreciationBook."Depreciation Method"::Manual);
+            ELSE
+              ERROR(Text001);
+            END;
+            FADepreciationBook.VALIDATE("FA Posting Group","FA Posting Group");
+            FADepreciationBook.VALIDATE("Depreciation Starting Date", "Depreciation Starting Date");
+            FADepreciationBook.VALIDATE("No. of Depreciation Years", "No. of Depreciation Years");
+            FADepreciationBook.INSERT(TRUE);
+
+            // Add dimension values for "component" asset
+             DefaultDimension.INIT;
+             DefaultDimension.VALIDATE("Table ID", DATABASE::"Fixed Asset");
+             DefaultDimension.VALIDATE("No.",FixedAsset."No.");
+             DefaultDimension.VALIDATE("Dimension Code",'CCA');
+             DefaultDimension.VALIDATE("Dimension Value Code",CCA);
+             DefaultDimension.INSERT(TRUE);
+             DefaultDimension.INIT;
+             DefaultDimension.VALIDATE("Table ID", DATABASE::"Fixed Asset");
+             DefaultDimension.VALIDATE("No.",FixedAsset."No.");
+             DefaultDimension.VALIDATE("Dimension Code",'CCE');
+             DefaultDimension.VALIDATE("Dimension Value Code",CCE);
+             DefaultDimension.INSERT(TRUE);
+
+            // Adding "component" asset to main asset
+            WITH MainAssetComp DO BEGIN
+              MainAssetComp.INIT;
+              MainAssetComp.VALIDATE("Main Asset No.", "Main Fixed Asset No.");
+              MainAssetComp.VALIDATE("FA No.",FixedAsset."No.");
+              MainAssetComp.INSERT(TRUE);
+            END;
+
+            "Created Date/Time" := CURRENTDATETIME;
+            "Created User ID" := USERID;
+            "Fixed Asset No." := FixedAsset."No.";
+            "Error Message" := '';
+            Status := Status::Process;
+            MODIFY;
+          END;
+
+  }
+  CODE
+  {
+    VAR
+      MainFixedAsset@1000000002 : Record 5600;
+      FixedAsset@1000000000 : Record 5600;
+      MainAssetComp@1000000003 : Record 5640;
+      FADepreciationBook@1000000001 : Record 5612;
+      Text001@1000000004 : TextConst 'ENU=Invalid depreciation method!;NOR=Ugyldig avskrivningsmetode!';
+      DefaultDimension@1000000005 : Record 352;
+      FASubclass@1000000006 : Record 5608;
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Codeunit 50004 AcquireFixedAsset
+{
+  OBJECT-PROPERTIES
+  {
+    Date=23.01.18;
+    Time=08:04:37;
+    Modified=Yes;
+    Version List=;
+  }
+  PROPERTIES
+  {
+    TableNo=50003;
+    OnRun=BEGIN
+            TempGenJnlLine.INIT;
+            TempGenJnlLine."Journal Template Name" := JournalTemplate;
+            TempGenJnlLine."Journal Batch Name" := BatchName;
+            TempGenJnlLine."Document Type" := TempGenJnlLine."Document Type"::Invoice;
+            TempGenJnlLine."Account Type" := TempGenJnlLine."Account Type"::"Fixed Asset";
+            TempGenJnlLine."Account No." := "Fixed Asset No.";
+            TempGenJnlLine."FA Posting Type" := TempGenJnlLine."FA Posting Type"::"Acquisition Cost";
+            TempGenJnlLine."Posting Date" := PostingDate;
+            TempGenJnlLine.Amount := Amount;
+            TempGenJnlLine."Bal. Account Type" := TempGenJnlLine."Bal. Account Type"::"G/L Account";
+            TempGenJnlLine."Bal. Account No." := "Bal. Account No.";
+            IF NOT TempGenJnlLine.INSERT THEN
+              TempGenJnlLine.MODIFY;
+            TempGenJnlLine.CreateFAAcquisitionLines(OutputGenJnlLine);
+
+            "Journal Date/Time" := CURRENTDATETIME;
+            "Journal User ID" := USERID;
+            "Journal Template" := JournalTemplate;
+            "Journal Batch" := BatchName;
+            Status := Status::Finished;
+            "Error Message" := '';
+            MODIFY;
+          END;
+
+  }
+  CODE
+  {
+    VAR
+      Text001@1000000004 : TextConst 'ENU=Invalid depreciation method!;NOR=Ugyldig avskrivningsmetode!';
+      TempGenJnlLine@1000000000 : TEMPORARY Record 81;
+      OutputGenJnlLine@1000000001 : Record 81;
+      PostingDate@1000000005 : Date;
+      JournalTemplate@1000000003 : Text[10];
+      BatchName@1000000002 : Code[10];
+
+    PROCEDURE SetParameters@1000000000(NewPostingDate@1000000015 : Date;NewJournalTemplate@1000000010 : Text[10];NewBatchName@1000000004 : Code[10]);
+    BEGIN
+      PostingDate := NewPostingDate;
+      JournalTemplate := NewJournalTemplate;
+      BatchName := NewBatchName;
+    END;
+
+    BEGIN
+    END.
+  }
+}
+
+OBJECT Page 50003 Fixed Asset Import Worksheet
+{
+  OBJECT-PROPERTIES
+  {
+    Date=23.01.18;
+    Time=08:05:43;
+    Modified=Yes;
+    Version List=;
+  }
+  PROPERTIES
+  {
+    InsertAllowed=No;
+    SourceTable=Table50003;
+    PageType=List;
+    OnOpenPage=BEGIN
+                 SETFILTER(Status,'<>%1',Status::Finished);
+               END;
+
+    ActionList=ACTIONS
+    {
+      { 1000000023;0 ;ActionContainer;
+                      ActionContainerType=ActionItems }
+      { 1000000022;1 ;ActionGroup;
+                      CaptionML=[ENU=F&unctions;
+                                 NOR=F&unksjoner];
+                      Image=Action }
+      { 1000000021;2 ;Action    ;
+                      CaptionML=[ENU=&Import From Excel;
+                                 NOR=&Importer fra Excel];
+                      RunObject=Report 50004;
+                      Promoted=Yes;
+                      PromotedIsBig=Yes;
+                      Image=Import;
+                      PromotedCategory=Process }
+      { 1000000020;2 ;Action    ;
+                      Name=CreateFixedAssets;
+                      CaptionML=[ENU=Create Fixed Assets;
+                                 NOR=Opprett aktiva];
+                      RunObject=Report 50003;
+                      Promoted=Yes;
+                      PromotedIsBig=Yes;
+                      Image=New;
+                      PromotedCategory=Process }
+    }
+  }
+  CONTROLS
+  {
+    { 1000000000;0;Container;
+                ContainerType=ContentArea }
+
+    { 1000000001;1;Group  ;
+                Name=Group;
+                GroupType=Repeater }
+
+    { 1000000002;2;Field  ;
+                SourceExpr="Entry No." }
+
+    { 1000000003;2;Field  ;
+                SourceExpr="Main Fixed Asset No." }
+
+    { 1000000004;2;Field  ;
+                SourceExpr=Description }
+
+    { 1000000005;2;Field  ;
+                SourceExpr="FA Location Code" }
+
+    { 1000000006;2;Field  ;
+                SourceExpr=Amount }
+
+    { 1000000007;2;Field  ;
+                SourceExpr="No. of Depreciation Years" }
+
+    { 1000000008;2;Field  ;
+                SourceExpr="Depreciation Starting Date" }
+
+    { 1000000009;2;Field  ;
+                SourceExpr="FA Class Code" }
+
+    { 1000000010;2;Field  ;
+                SourceExpr="Depreciation Book Code" }
+
+    { 1000000011;2;Field  ;
+                SourceExpr="FA Posting Group" }
+
+    { 1000000012;2;Field  ;
+                SourceExpr="Depreciation Method" }
+
+    { 1000000013;2;Field  ;
+                SourceExpr=CCA }
+
+    { 1000000014;2;Field  ;
+                SourceExpr=CCE }
+
+    { 1000000024;2;Field  ;
+                SourceExpr="Bal. Account No." }
+
+    { 1000000015;2;Field  ;
+                SourceExpr="Import Date/Time" }
+
+    { 1000000016;2;Field  ;
+                SourceExpr="Import User ID";
+                Visible=FALSE }
+
+    { 1000000017;2;Field  ;
+                SourceExpr="Import File Name";
+                Visible=FALSE }
+
+    { 1000000018;2;Field  ;
+                SourceExpr="Created Date/Time" }
+
+    { 1000000019;2;Field  ;
+                SourceExpr="Created User ID";
+                Visible=FALSE }
+
+    { 1000000025;2;Field  ;
+                SourceExpr="Fixed Asset No." }
+
+    { 1000000026;2;Field  ;
+                SourceExpr="Journal Date/Time" }
+
+    { 1000000027;2;Field  ;
+                SourceExpr="Journal User ID";
+                Visible=FALSE }
+
+    { 1000000028;2;Field  ;
+                SourceExpr="Journal Template";
+                Visible=FALSE }
+
+    { 1000000029;2;Field  ;
+                SourceExpr="Journal Batch";
+                Visible=FALSE }
+
+    { 1000000030;2;Field  ;
+                SourceExpr="Error Message" }
+
+    { 1000000031;2;Field  ;
+                SourceExpr=Status }
+
+  }
+  CODE
+  {
+
+    BEGIN
+    END.
+  }
+}
+
